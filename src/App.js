@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { SafeAreaView, Image, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { SafeAreaView, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Torch from 'react-native-torch';
 import shake from 'react-native-shake';
 
@@ -15,9 +15,7 @@ const App = () => {
   useEffect(() => { Torch.switchState(toggle); }, [toggle]);
 
   useEffect(() => {
-    const subSription = shake.addListener(() =>{
-      setToggle(oldToggle => !oldToggle);
-    });
+    const subSription = shake.addListener(handleChandeStatus);
     return () => subSription.remove();
   }, []);
 
