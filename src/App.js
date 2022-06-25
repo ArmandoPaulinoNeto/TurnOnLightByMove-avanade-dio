@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { SafeAreaView, Image, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Torch from 'react-native-torch';
+import shake from 'react-native-shake';
 
 import lightOff from './assets/icons/eco-light-off.png';
 import light from './assets/icons/eco-light.png';
@@ -10,10 +11,16 @@ import dioWhite from './assets/icons/logo-dio-white.png';
 const App = () => {
 
   const [toggle, setToggle] = useState(false);
+
+  useEffect(() => { Torch.switchState(toggle); }, [toggle]);
+
   useEffect(() => {
-    Torch.switchState(toggle);
-    Alert.alert(toggle ? 'Lenterna ligada' : 'Lenterna desligada');
-  }, [toggle]);
+    const subSription = shake.addListener(() =>{
+      setToggle(oldToggle => !oldToggle);
+    });
+    return () => subSription.remove();
+  }, []);
+
   const handleChandeStatus = () => setToggle(oldToggle => !oldToggle);
 
   return (
